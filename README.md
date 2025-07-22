@@ -14,7 +14,7 @@ cd app
 ```
 Una vez dentro de la carpeta usa el siguiente comando para crear un archivo que contendra la informacion de configuracion del proyecto (recuerda personalizarla). Deja el punto de entrada como index.js
 ```
-npm init
+npm init -y
 ```
 
 Vamos a instalar express.js
@@ -130,3 +130,44 @@ module.exports = router
 
 ```
 y lo probamos en el navegador en la misma ruta anterior
+## .env
+instalamos dotenv aunque no es necesario en las nuevas versiones.
+```
+npm install dotenv
+```
+para probar que nos quedo bien modificamos index.js
+```
+const express = require("express")
+const proyectoRoutes = require("./routes/routes.proyectos")//
+require("dotenv").config()
+const app = express()
+const PORT = process.env.PORT || 3006
+app.set("port",PORT)
+app.get("/",(req,res)=>{
+    console.log("hola mundo")
+    res.send("hola mundo")
+})
+app.use("/api/proyectos",proyectoRoutes)//
+app.listen(PORT,()=>{
+    console.log(`Escuchando en el puerto ${PORT}`)
+})
+```
+y en el archivo .env que creamos a la altura del index.js agregamos 
+```
+PORT = 3005
+```
+y no olvidar agregar el .env al .gitignore
+```
+node_modules
+.env
+```
+## paso a paso para el link de mongodb
+Recuerden tienen que primero crear una cuenta en MongoDB, despues crear el clouster gratis seguir los siguientes pasos:
+ir a la paguina de clouster, y dar click al boton de conectar
+<img src="img/clouser.png" alt="">
+despues seleccionar mongogoDB for VS code
+<img src="img/forVisual.png" alt="">
+finalmente compiar el link y traerlo listo para la clase 
+<img src="img/link.png" alt="Header Javier">
+cualquier cosa me pueden escribir por whatsapp para instrucciones adicionales.
+
