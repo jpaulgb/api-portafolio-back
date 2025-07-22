@@ -1,7 +1,8 @@
 const express = require("express")
 const proyectoRoutes = require("./routes/routes.proyectos")//
+require("dotenv").config()
 const app = express()
-const PORT = 3006
+const PORT = process.env.PORT || 3006
 app.set("port",PORT)
 app.get("/",(req,res)=>{
     console.log("hola mundo")
