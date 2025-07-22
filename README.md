@@ -164,7 +164,7 @@ node_modules
 ## paso a paso para el link de mongodb
 Recuerden tienen que primero crear una cuenta en MongoDB, despues crear el clouster gratis seguir los siguientes pasos:
 ir a la paguina de clouster, y dar click al boton de conectar
-<img src="img/clouser.png" alt="">
+<img src="img/clouster.png" alt="">
 despues seleccionar mongogoDB for VS code
 <img src="img/forVisual.png" alt="">
 finalmente compiar el link y traerlo listo para la clase 
