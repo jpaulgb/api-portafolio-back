@@ -170,4 +170,17 @@ despues seleccionar mongogoDB for VS code
 finalmente compiar el link y traerlo listo para la clase 
 <img src="img/link.png" alt="Header Javier">
 cualquier cosa me pueden escribir por whatsapp para instrucciones adicionales.
+```
+  {
+    "nombre": "Proyecto 1",
+    "imagen": "proyecto-default.jpg",
+    "repo": "https://github.com/usuario/proyecto",
+    "tecnologias": [
+      "React",
+      "Bootstrap",
+      "Vite"
+    ],
+    "descripcion": "Este es el proyecto n\u00famero 1, dise\u00f1ado para mostrar una tarjeta interactiva con modal."
+  }
+```
 
