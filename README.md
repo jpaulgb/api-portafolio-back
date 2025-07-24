@@ -235,6 +235,7 @@ const ProyectoSchema = new Schema({
 module.exports = mongoose.model("Proyecto",ProyectoSchema)
 ```
 ## controladores rutas y prueba en postman
+### crear proyecto
 Ahora vamos a construir los controladores y sus rutas, en models/controllers.proyecto.js agregar las lineas
 ```
 const ProyectosModel = require("../models/proyectos")
@@ -287,3 +288,94 @@ y en body poner el siguiente json
 ```
 <img src="img/crear_postman.png" alt="crear proyecto en postam">
 
+### Listar proyectos
+
+Ya creamos, ahora vamos a ver todos los proyectos guardados
+en el controlador agregamos
+```
+exports.proyectosList = async (req,res)=>{
+    try {
+        const proyectosList = await ProyectosModel.find({})
+        return res.status(200).json(proyectosList)
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+}
+```
+en rutas agregamos
+```
+router.get("/", proyectoControllers.proyectosList)
+```
+y probamos como se ve en la imagen
+<img src="img/lista_postman.png" alt="listar proyectos en postam">
+
+### Traer proyecto por ID
+en el controlador agregamos 
+```
+exports.obtenerProyectoPorId = async (req,res)=>{
+    try {
+        const {id} = req.params
+        const proyecto = await ProyectosModel.findById(id)
+        return res.status(200).json(proyecto)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send(error)                
+    }
+}
+```
+en rutas 
+```
+router.get("/:id",proyectoControllers.obtenerProyectoPorId)
+```
+para probar en postman es necesario que usen un id de alguno de sus registros, para eso usar el endpoint anterior y usar uno de los id de los elementos creados
+<img src="img/traer_proyecto.png" alt="traer proyecto en postam">
+
+### Modificar Proyecto
+
+Este controlador es un poco una combinación entre el de crear y el de traer por id, el controlador quedaria:
+```
+exports.modificarProyecto = async (req,res)=>{
+    try {
+        const {id} = req.params
+        const proyecto = req.body
+        if(id.length!=24){
+            return res.status(400).json({message:"id no valido"})
+        }
+        const proyectoCambiado = await ProyectosModel.findByIdAndUpdate(id,proyecto,{new:true})
+        if(proyectoCambiado == null){
+            return res.status(404).json({message:"proyecto no encontrado"})
+        }
+        return res.status(200).json(proyectoCambiado)
+    } catch (error) {
+        return res.status(500).send(error)                        
+    }
+}
+```
+en rutas agregamos 
+```
+router.put("/:id",proyectoControllers.modificarProyecto)
+```
+Como cuando traemos por id tenemos que usar un id de un registro de nuestra BD
+<img src="img/modificar_postman.png" alt="modificar proyecto en postam">
+
+### eliminar proyecto por id
+esta funcionalidad es mas sencilla, en el controlador ponemos:
+```
+exports.eliminarProyecto = async (req,res)=>{
+    try {
+        const {id} = req.params
+        if(id.length!=24){
+            return res.status(400).json({message:"id no valido"})
+        }
+        await ProyectosModel.findByIdAndDelete(id)
+        return res.status(200).json({message:`Proyecto con ${id} eliminado`})
+    } catch (error) {
+        return res.status(500).send(error)                        
+    }
+}
+```
+en rutas 
+```
+router.delete("/:id",proyectoControllers.eliminarProyecto)
+```
+<img src="img/eliminar_postman.png" alt="eliminar proyecto en postam">
