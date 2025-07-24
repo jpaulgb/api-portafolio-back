@@ -170,6 +170,70 @@ despues seleccionar mongogoDB for VS code
 finalmente compiar el link y traerlo listo para la clase 
 <img src="img/link.png" alt="Header Javier">
 cualquier cosa me pueden escribir por whatsapp para instrucciones adicionales.
+
+## conectar la base de datos
+en .env agregamos MONGO_DB_URI que obtuvimos en el paso anterior
+```
+PORT = 3005
+MONGO_DB_URI = "mongodb+srv://Usuario_bd:clave_del_usuario_bd_no_de_la_cuenta@cluster0.z0kf7n2.mongodb.net/"
+```
+Recuerden el nombre y la contraseña no es la de entrar a mongo, es la de la base de datos.
+### cambios en index.js
+en index.js queda:
+```
+const express = require("express")
+const proyectoRoutes = require("./routes/routes.proyectos")//
+const { default: mongoose } = require("mongoose")
+require("dotenv").config()
+const app = express()
+const PORT = process.env.PORT || 3006
+app.set("port",PORT)
+app.get("/",(req,res)=>{
+    console.log("hola mundo")
+    res.send("hola mundo")
+})
+app.use(express.json())
+app.use("/api/proyectos",proyectoRoutes)//
+mongoose.connect(process.env.MONGO_DB_URI)
+.then(()=> console.log("conect to DB"))
+.catch((err)=>console.error(err.message))
+app.listen(PORT,()=>{
+    console.log(`Escuchando en el puerto ${PORT}`)
+})
+```
+## Modelo
+Vamos a crear el archivo proyecto.js y vamos a poner lo siguiente
+```
+const mongoose = require("mongoose")
+const Schema = mongoose.Schema
+const ProyectoSchema = new Schema({
+    nombre : {
+        type : String,
+        required:true,
+        maxLength:100
+    },
+    imagen : {
+        type: String,
+        required : true,
+        maxLength: 100
+    },
+    repo:{
+        type: String,
+        required : true,
+        maxLength: 100        
+    },
+    tecnologias:{
+        type:[String]
+    },
+    descripcion : {
+        type: String,
+        required : true,
+        maxLength: 500   
+    }
+})
+
+module.exports = mongoose.model("Proyecto",ProyectoSchema)
+```
 ```
   {
     "nombre": "Proyecto 1",
