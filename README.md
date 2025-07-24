@@ -234,6 +234,44 @@ const ProyectoSchema = new Schema({
 
 module.exports = mongoose.model("Proyecto",ProyectoSchema)
 ```
+## controladores rutas y prueba en postman
+Ahora vamos a construir los controladores y sus rutas, en models/controllers.proyecto.js agregar las lineas
+```
+const ProyectosModel = require("../models/proyectos")
+```
+```
+exports.crearProyecto = async (req,res)=>{
+    try {
+        let nombre = req.body.nombre
+        const imagen = req.body.imagen
+        const repo = req.body.repo
+        const tecnologias = req.body.tecnologias
+        const descripcion = req.body.descripcion
+        nombre = nombre.replace(/\s+/g, '_')
+        await ProyectosModel.create({
+            nombre,
+            imagen,
+            repo,
+            tecnologias,
+            descripcion
+        })
+        return res.status(201).json(nombre)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send(error)        
+    }
+}
+``` 
+en routes/routes.proyectos.js agregar la linea
+```
+router.post("/",proyectoControllers.crearProyecto)
+
+```
+en postman poner la ruta 
+```
+127.0.0.1:3005/api/proyectos
+```
+y en body poner el siguiente json
 ```
   {
     "nombre": "Proyecto 1",
@@ -247,4 +285,5 @@ module.exports = mongoose.model("Proyecto",ProyectoSchema)
     "descripcion": "Este es el proyecto n\u00famero 1, dise\u00f1ado para mostrar una tarjeta interactiva con modal."
   }
 ```
+<img src="img/crear_postman.png" alt="crear proyecto en postam">
 

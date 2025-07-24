@@ -13,10 +13,22 @@ exports.proyectosList = async (req,res)=>{
 }
 exports.crearProyecto = async (req,res)=>{
     try {
-        const proyecto = req.body
-        await ProyectosModel.create(proyecto)
-        return res.status(201).json(proyecto)
+        let nombre = req.body.nombre
+        const imagen = req.body.imagen
+        const repo = req.body.repo
+        const tecnologias = req.body.tecnologias
+        const descripcion = req.body.descripcion
+        nombre = nombre.replace(/\s+/g, '_')
+        await ProyectosModel.create({
+            nombre,
+            imagen,
+            repo,
+            tecnologias,
+            descripcion
+        })
+        return res.status(201).json(nombre)
     } catch (error) {
+        console.error(error)
         return res.status(500).send(error)        
     }
 }
@@ -58,16 +70,16 @@ exports.eliminarProyecto = async (req,res)=>{
         return res.status(500).send(error)                        
     }
 }
-// exports.eliminarProyectoPorNombre = async (req,res)=>{
-//     try {
-//         const nombre = req.body.nombre
-//         const {nombreParam} = req.params
-//         if(nombre != nombreParam){
-//             return res.status(400).json({message:"Datos inconsistentes"})
-//         }
-//         const proyecto = await ProyectosModel.findOneAndDelete({"nombre":nombre})
-//         return res.status(200).json(proyecto)
-//     } catch (error) {
-//         return res.status(500).send(error)                                
-//     }
-// }
+exports.eliminarProyectoPorNombre = async (req,res)=>{
+    try {
+        const nombre = req.body.nombre
+        const {nombreParam} = req.params
+        if(nombre != nombreParam){
+            return res.status(400).json({message:"Datos inconsistentes"})
+        }
+        const proyecto = await ProyectosModel.findOneAndDelete({nombre:nombre})
+        return res.status(200).json(proyecto)
+    } catch (error) {
+        return res.status(500).send(error)                                
+    }
+}
