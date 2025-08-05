@@ -1,6 +1,8 @@
 const express = require("express")
 const proyectoRoutes = require("./routes/routes.proyectos")//
 const { default: mongoose } = require("mongoose")
+//IMPORTAR CORS
+const cors = require("cors")
 require("dotenv").config()
 const app = express()
 const PORT = process.env.PORT || 3006
@@ -10,6 +12,8 @@ app.get("/",(req,res)=>{
     res.send("hola mundo")
 })
 app.use(express.json())
+//linea para habilitar USAR cors
+app.use(cors())
 app.use("/api/proyectos",proyectoRoutes)//
 mongoose.connect(process.env.MONGO_DB_URI)
 .then(()=> console.log("conect to DB"))
